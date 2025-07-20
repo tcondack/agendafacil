@@ -6,9 +6,8 @@ from django.urls import include, url
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.index, name='index'),
-    path('', views.perfil, name='perfil'),
-    path('', include(admin.site.urls)),
-    path('', views.adm_perfil, name='adm_perfil')
+    path('base', views.index, name='base'),
+    path('perfil', views.perfil, name='perfil')
+    path('adm_perfil', views.adm_perfil, name='adm_perfil')
 
 ]
