@@ -1,0 +1,205 @@
+body{
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    margin: 0;
+    padding: 0;
+    background-color: #a7e1dd;
+    font-size: 20px;
+}
+.container {
+    display: block;
+    background-color:rgba(255, 250, 250, 0.96);
+    width: 90%;
+    height: 90%;
+    border-radius: 5px;
+    border: outset 2px #1baaa3;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 30px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);    
+}
+.divbtn {
+    margin: 0.3em;
+}
+.btn:hover{
+    background: white;
+    color: #006b64
+}
+.btn{
+    width: 180px;
+    height: 30px;
+    border: solid 2px #586B6A;
+    background: #006b64;
+    font-size: 12px;
+    font-weight: bolder;
+    cursor: pointer;
+    margin: 5px;
+    color:white;
+    border-radius: 10px;
+    
+}
+.bt6 
+{
+    background-color: #006b64;
+    color:white;
+    border-radius: 5px;
+    border: 1px;
+    width: 35px;
+    height: 15px;
+    font-size: 12px;
+    margin-left: 1%;
+   
+}
+
+.container2 {
+    display: block;
+    background-color: whitesmoke;
+    width: 80%;
+    height: 80%;
+    size-adjust: fixed;
+    border-radius: 10px;
+    border: solid 1px #006b64;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.inicio {
+    margin-left: 5%;
+    margin-right: 5%;
+}
+.inputlogin{
+        padding: 1%;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+}
+.emailpng{
+        width: 25%;
+        height: 25%;
+
+}
+.bt2{
+    font-size: 12px
+}
+.site-header {
+    background-image: url(IMAGENS/header\ 2.jpg) ;
+    color: white;
+    text-align: center;
+    padding: 15px;
+    font-size: 24px;
+    border-radius: 0px 0px 10px 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+.site-content {
+    padding: 20px;
+}
+.site-footer {
+    background-image: url(IMAGENS/header\ 2.jpg) ;
+    color: white;
+    text-align: center;
+    padding: 10px;
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+    border-radius: 10px 10px 0px 0px;
+    box-shadow: 0 8px 4px rgba(0, 0, 0, 0.3);
+}
+.button {
+    display: block;
+    width: auto;
+    padding: 10px;
+    margin: 10px 0;
+    background-color: #006b64;
+    color: white;
+    text-align: center;
+    border-radius: 0px;
+    text-decoration: none;
+}
+.button:hover {
+    background-color: white;
+}
+.menu-button {
+    position: absolute;
+    top: 62px;
+    left: 20px;
+    background-color: #006b64;
+    color: white;
+    border: solid 2px #586b6a98;
+    padding: auto;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 15pt;
+    width: 100px;
+    height: 30px;
+    
+}
+.menu-button:hover {
+    background-color: white;
+    color:#006b64;
+}
+.menu {
+    display: none;
+    position: absolute;
+    top: 93px;
+    left: 20px;
+    background-color: #006b64;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    border-radius: 5px;
+    overflow: hidden;
+    font-size: 15pt;
+}
+.menu a {
+    display: flex;
+    padding: 2px;
+    text-decoration: none; 
+}
+.menu a:hover {
+    background: white;
+    color: #006b64
+}
+.cliente01 {
+    border: solid 1px #006b64;
+    width: 15%;
+    margin-right: 2%;
+    border-radius: 10px;
+    float:left;
+    margin-left: 2%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+.form1{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    label {
+        margin-bottom: 10px;
+        font-weight: bold;
+        color: #333;
+    }
+    textarea{
+        width: 60%;
+        height: 100px;
+        margin-bottom: 15px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-sizing: border-box;
+
+     }
+.Dados-Cliente{
+    display:grid;
+    margin-right: 2%;
+    
+}
+.A1{
+    display: block;
+    background: rgb(237, 237, 237);
+    padding: 8px;
+    font-size: 20px;
+    border-radius: 10px;
+    
+}
+.B1{
+    display:block;
+    background: whitesmoke;
+    padding: 8px;
+    font-size: 20px;
+    border-radius: 10px;
+}
