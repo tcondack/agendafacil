@@ -1,0 +1,10 @@
+<p>
+    <a href="{% url 'login' %}"> app_agenda_facil</a>
+    {% if user.is_autenticated }
+        Olá, {{user.username}}
+        {% else %}
+            <a href="{% url 'login' %}">Entrar</a>
+            {% endif %}
+</p>
+
+{% blockcontent %}{% endblock content %}

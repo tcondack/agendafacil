@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'app_agenda_facil',
+    'login_agendafacil',
 ]
 
 MIDDLEWARE = [
