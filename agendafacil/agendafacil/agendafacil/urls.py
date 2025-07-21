@@ -6,5 +6,5 @@ from django.urls import include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('base', views.base, name='base')
+    path('', include('app_agenda_facil.urls'))
 ]
