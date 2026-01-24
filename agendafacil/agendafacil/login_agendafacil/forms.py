@@ -10,15 +10,19 @@ class UsuarioForm(UserCreationForm):
             'email',
             'CPF',
             'telefone',
-            'foto_perfil'
+            'foto_perfil',
+            'password1',
+            'password2',
         ]
        
     def save(self, commit=True):
         user = super().save(commit=False)
 
-        user.tipo_usuario = 'cliente'  # Definindo o tipo de usuário como 'cliente' por padrão
 
-        user.username = self.cleaned_data['CPF']  # Usando o CPF como nome de usuário
+        CPF = self.cleaned_data['CPF']  # Usando o CPF como nome de usuário
+        user.username = CPF
+        user.tipo_usuario = 'cliente'  # Definindo o tipo de usuário como 'cliente' por padrão
+        user.is_active = True  # Ativando o usuário imediatamente
         if commit:
             user.save()
         return user
