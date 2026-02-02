@@ -10,12 +10,11 @@
     <script src="{% static 'js/index.js' %}"></script>
 </head>
 <body>
-         <div class="site-header">
+            <div class="site-header">
               <img src="{% static 'imagens/logo001.png' %}" width=320px>
-              <button class="menu-button" onclick="toggleMenu()">Entrar</button>
-                 <div class="menu" id="menu">
-                 <a href="{% url 'login' %}" class="button">Cliente</a>
-                 </div>
+              <a href="{% url 'login' %}" class="menu-button">Login
+              </a>
+            </div>
          </div>
          <div class="container">
             <div class="site-content"><center>

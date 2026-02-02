@@ -129,7 +129,7 @@ body{
     font-size: 15pt;
     width: 100px;
     height: 30px;
-    
+    text-decoration: none;
 }
 .menu-button:hover {
     background-color: white;
