@@ -15,11 +15,11 @@
 <body>
 
 <div class="site-header">
-    <img src="{% static 'imagens/logo001.png' %}" width="320px">
+    <a href="{% url 'base' %}"><img src="{% static 'imagens/logo001.png' %}" width="320px"></a>
     <button class="menu-button" onclick="toggleMenu()">Menu</button>
 
     <div class="menu" id="menu">
-        <a href="{% url 'index' %}" class="button">Inicio</a>
+        <a href="{% url 'base' %}" class="button">Inicio</a>
     </div>
 </div>
 

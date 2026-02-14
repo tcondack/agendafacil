@@ -1,0 +1,74 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Cliente</title>
+
+    <link rel="icon" type="image/ico" href="{% static 'imagens/ICON003.ico' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <script src="{% static 'js/index.js' %}"></script>
+</head>
+
+<body>  
+    <div class="site-header">
+        <img src="{% static 'imagens/logo001.png' %}" width=320px>
+        <button class="menu-button" onclick="toggleMenu()">Menu</button>
+        <div class="menu" id="menu">
+            <a href="CriarHorarioAtendimento.html" class="button">Criar Horários</a>
+            <a href="Gerenciar Usuarios.html" class="button">Gerenciar Usuários</a>
+            <a href="Visualização Feedbak.html" class="button">Feedbacks Recebidos</a>
+            <form action="{% url 'logout' %}" method="post">
+                {% csrf_token %}
+                <button type="submit" class="button">Sair</button>
+            </form>
+       </div>
+    </div>
+    <div class="container">
+        <div class="divbtn">             
+            <p><strong>Bem-vindo, Administrador! </strong></p>
+            <hr>
+            <center>
+            <h2>Status dos atendimentos</h2>
+                    <table>
+                        <tr class="topo">
+                            <th>Data</th><th>Agendado</th><th>Atendido</th><th>Ausencias</th>
+                        </tr>
+                        <tr class="linha A">
+                           <td>03/12</td> <td>10</td><td>8</td><td>2</td>
+                        </tr>
+                        <tr class="linha B">
+                            <td>04/12</td> <td>15</td><td>15</td><td>0</td>
+                         </tr>
+                         <tr class="linha A">
+                            <td>05/12</td> <td>18</td><td>17</td><td>1</td>
+                         </tr>
+                         <tr class="linha B">
+                             <td>06/12</td> <td>12</td><td>12</td><td>0</td>
+                          </tr><tr class="linha A">
+                            <td>07/12</td> <td>Não haverá atendimentos</td>
+                         </tr>
+                         <tr class="linha B">
+                             <td>08/12</td> <td>Não haverá atendimentos</td>
+                          </tr><tr class="linha A">
+                            <td>09/12</td> <td>6</td><td>4</td><td>2</td>
+                         </tr>
+                         <tr class="linha B">
+                             <td>10/12</td> <td>11</td><td>10</td><td>1</td>
+                          </tr><tr class="linha A">
+                            <td>11/12</td> <td>19</td><td>19</td><td>0</td>
+                         </tr>
+                         <tr class="linha B">
+                             <td>12/12</td> <td>17</td><td>17</td><td>0</td>
+                          </tr>
+                         
+                    </table>
+        </div> <br><br>  
+    </div></center>
+    <br><br>
+    <div class="site-footer">
+Copyright © 2026 — Desenvolvido com 💚 em Teresópolis.
+    </div>
+</body>
+</html>

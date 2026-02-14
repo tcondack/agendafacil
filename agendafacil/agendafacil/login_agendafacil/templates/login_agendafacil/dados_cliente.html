@@ -1,0 +1,53 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agenda Fácil NAF</title>
+    <link rel="icon" type="image/ico" href="{% static 'imagens/ICON003.ico' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <script src="{% static 'js/index.js' %}"></script>
+</head>
+<body>
+<body>  
+    <div class="site-header">
+        <img src="{% static 'imagens/logo001.png' %}" width=320px>
+        <button class="menu-button" onclick="toggleMenu()">Menu</button>
+        <div class="menu" id="menu">
+            <a href="Perfil do Cliente.html" class="button">Pagina Inicial</a>
+            <a href="Agendamento.html" class="button">Agendar</a>
+            <a href="Feedback.html" class="button">Avaliação</a>
+            <a href="Login Cliente.html" class="button">Sair</a>
+       </div>
+    </div>
+            <div class="container">
+                <div class="divbtn"> 
+                    <div class="divbtn">             
+                        <p><strong><h3>Bem-vindo, Cliente!</h3></strong></p>
+                            <hr>            
+            <p><center><strong><h1>Meu Perfil</h1></strong></center></p>
+            <img class="cliente01" src="IMAGENS/Cliente01.jpg"> 
+            <table class="Dados-Cliente">
+                <tr class="A1"><td><strong>NOME:</strong> Lucas Lorenzo Carlos Silva</td></tr>
+                <tr class="B1"><td><strong>NASCIMENTO:</strong> 26/02/1986</td></tr>
+                <tr class="A1"><td> <strong>CPF:</strong> 726.865.797-81</td></tr>
+                <tr class="B1"><td><strong>RG:</strong> 43.859.995-0</td></tr>
+                <tr class="A1"><td><strong>CELULAR:</strong> (21) 995-872-486</td></tr>
+                <tr class="B1"><td><strong>SEXO:</strong> Masculino</td></tr>
+                <tr class="A1"><td><strong>E-MAIL:</strong> lucas_silva@gmail.com.br</td></tr>
+                <tr class="B1"><td> <strong>ENDEREÇO:</strong> Rua Oscar José da Silva, 184 - Pimenteiras</td></tr>
+                <tr class="A1"><td> <strong>CIDADE:</strong> Teresópolis</td></tr>
+                <tr class="B1"><td> <strong>ESTADO:</strong> Rio de Janeiro</td></tr>
+            </table>
+            <br><br>
+        </div>
+    </div>
+</div>
+<br><br>
+<br><br>
+ <div class="site-footer">
+Copyright © 2024.
+</div>
+</body>
+</html>
