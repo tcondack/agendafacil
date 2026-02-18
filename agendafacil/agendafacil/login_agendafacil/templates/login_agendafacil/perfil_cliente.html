@@ -7,9 +7,7 @@
     <title>Agenda Fácil NAF</title>
     <link rel="icon" type="image/ico" href="{% static 'imagens/ICON003.ico' %}">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
-    <script src="{% static 'js/index.js' %}"></script>
 </head>
-<body>
 <body>  
     <div class="site-header">
         <img src="{% static 'imagens/logo001.png' %}" width=320px>
@@ -28,57 +26,70 @@
                 <div class="divbtn">             
             <p><strong><h2>Bem-vindo, Cliente! </h2></strong></p>
                 <hr><center>
-                <div class="container">
-                <div id="passar_mouse"><h3>Sua Proxima Consulta</h3> 
-                    <div id="mostrar">
-                     <table>
-    <tr>
-        <th>Data</th>
-        <th>Horário</th>
-    </tr>
+ <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
 
-    {% for agendamento in agendamentos %}
-    <tr>
-        <td>{{ agendamento.data }}</td>
-        <td>{{ agendamento.horario }}</td>
-    </tr>
-    {% empty %}
-    <tr>
-        <td colspan="2">Você ainda não possui agendamentos.</td>
-    </tr>
-    {% endfor %}
-</table>   
-                        
-                        <br>Lembre-se de chegar com antecedencia e leve os documentos Solicitados!<br>
-                         Para Cancelar<a href="Cancelar Agendamento.html">Clique aqui!</a></div> 
-            </div>
-                </div>
-                <div class="container">
-                    <p><h2>Histórico de Consultas</h2></p>
-                    <table>
-                        <tr class="topo">
-                            <th>Data</th><th>Horario</th><th>Atendente</th><th>Historico</th>
-                        </tr>
-                        <tr class="linha A">
-                           <td>03/10/2024</td> <td>10:00</td><td>Maria</td><td><div id="passar_mouse">Mais<div id="mostrar">Orientação sobre os documentos e o que podemos realizar.</div></td>
-                        </tr>
-                        <tr class="linha B">
-                            <td>20/10/2024</td> <td>11:00</td><td>Luiz</td><td><div id="passar_mouse">Mais<div id="mostrar">Entrega dos documentos e inclusão das informações.</div></td>
-                         </tr>
-                         <tr class="linha A">
-                            <td>05/11/2024</td> <td>12:00</td><td>Vitor</td><td><div id="passar_mouse">Mais<div id="mostrar">Atualização de dados da Receita.</div></td>
-                         </tr>
-                         <tr class="linha B">
-                            <td>22/11/2024</td> <td>13:00</td><td>Vitoria</td><td><div id="passar_mouse">Mais<div id="mostrar">Envio das documentações nescessárias.</div></td>
-                         </tr>
-                    </table></div>
+            <label>Nome:</label>
+            {{ form.first_name }}
+            <br>
+
+            <label>Email:</label>
+            {{ form.email }}
+            <br>
+
+            <label>Telefone:</label>
+            {{ form.telefone }}
+            <br>
+
+            <hr>
+
+            <h3>Endereço</h3>
+
+            <label>CEP:</label>
+            {{ form.cep }}
+            <br>
+
+            <label>Rua:</label>
+            {{ form.logradouro }}
+            <br>
+
+            <label>Número:</label>
+            {{ form.numero }}
+            <br>
+
+            <label>Complemento:</label>
+            {{ form.complemento }}
+            <br>
+
+            <label>Bairro:</label>
+            {{ form.bairro }}
+            <br>
+
+            <label>Cidade:</label>
+            {{ form.cidade }}
+            <br>
+
+            <label>Estado:</label>
+            {{ form.estado }}
+            <br>
+
+            <hr>
+
+            <label>Foto:</label>
+            {{ form.foto_perfil }}
+            <br><br>
+
+            <button class="btn" type="submit">Salvar Alterações</button>
+        </form>
 <br>
             </center>
         </div>
         <br><br>
         <br><br>
         <div class="site-footer">
-            Copyright © 2024.
-        </div>
+Copyright © 2026 — Desenvolvido com 💚 em Teresópolis.
+        
+</div>
+<script src="{% static 'login_agendafacil/js/index.js' %}"></script>
 </body>
 </html>

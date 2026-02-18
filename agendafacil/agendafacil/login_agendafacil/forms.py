@@ -2,6 +2,7 @@ from django import forms
 from .models import Usuario
 from django.contrib.auth.forms import UserCreationForm
 
+## criação de usuário
 class UsuarioForm(UserCreationForm):
     class Meta:
         model = Usuario
@@ -26,3 +27,21 @@ class UsuarioForm(UserCreationForm):
         if commit:
             user.save()
         return user
+
+## Edição perfil cliente    
+class UsuarioUpdateForm(forms.ModelForm):
+    class Meta:
+        model = Usuario
+        fields = [
+            'first_name',
+            'email',
+            'telefone',
+            'foto_perfil',
+            'cep',
+            'logradouro',
+            'numero',
+            'complemento',
+            'bairro',
+            'cidade',
+            'estado',
+        ]

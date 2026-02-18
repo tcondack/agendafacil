@@ -1,8 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
-from .forms import UsuarioForm
+from .forms import UsuarioForm, UsuarioUpdateForm
 from .models import Usuario, agendamento
-
 
 def index_login(request):
     return render(request, 'login_agendafacil/index_login.html')
@@ -82,21 +81,37 @@ def painel_cliente(request):
     if request.user.tipo_usuario != 'CLIENTE':
         return redirect('redirect_pos_login')
     return render(request, 'login_agendafacil/painel_cliente.html')
+
+
 @login_required
 def perfil_cliente(request):
     if request.user.tipo_usuario != 'CLIENTE':
         return redirect('redirect_pos_login')
-    return render(request, 'login_agendafacil/perfil_cliente.html')
+    if request.method == 'POST':
+        form = UsuarioUpdateForm(request.POST, request.FILES, instance=request.user)
+        if form.is_valid():
+            form.save()
+            return redirect('perfil_cliente')
+    else:
+        form = UsuarioUpdateForm(instance=request.user)
+        
+    return render(request, 'login_agendafacil/perfil_cliente.html', {'form': form})
+
+
 @login_required
 def agendamento_cliente(request):
     if request.user.tipo_usuario != 'CLIENTE':
         return redirect('redirect_pos_login')
     return render(request, 'login_agendafacil/agendamento_cliente.html')
+
+
 @login_required
 def feedback_cliente(request):
     if request.user.tipo_usuario != 'CLIENTE':
         return redirect('redirect_pos_login')
     return render(request, 'login_agendafacil/feedback_cliente.html')   
+
+
 @login_required
 def dados_cliente(request):
     if request.user.tipo_usuario != 'CLIENTE':
