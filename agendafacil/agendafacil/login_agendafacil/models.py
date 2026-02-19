@@ -7,6 +7,7 @@ class Usuario(AbstractUser):
     Usuario_escolha =(
         ('CLIENTE', 'Cliente'),
         ('ATENDENTE', 'Atendente'),
+        ('ADMIN', 'Admin'),
     )
 
     tipo_usuario = models.CharField(
@@ -45,7 +46,7 @@ class Usuario(AbstractUser):
     def __str__(self):
         return self.username  
    
-class agendamento(models.Model):
+class Agendamento(models.Model):
     cliente = models.ForeignKey(
     settings.AUTH_USER_MODEL, 
     on_delete=models.CASCADE,
@@ -63,6 +64,8 @@ class agendamento(models.Model):
         ('CANCELADO', 'Cancelado'),
         ('CONFIRMADO', 'Confirmado'),
         ('ATENDIDO', 'Atendido'),
+        ('FALTOU', 'Faltou'),
+        ('PENDENTE', 'Pendente')
        )
     cliente = models.ForeignKey('Usuario', on_delete=models.CASCADE)
     data = models.DateField()
@@ -71,7 +74,7 @@ class agendamento(models.Model):
     status = models.CharField(
         max_length=15,
         choices=STATUS_CHOICES,
-        default='AGENDADO',
+        default='PENDENTE',
     )
     criado_em = models.DateTimeField(auto_now_add=True)
     
@@ -80,3 +83,31 @@ class agendamento(models.Model):
      return f"{self.cliente} - {self.data} {self.horario}"
 
 
+class feedback_cliente(models.Model):
+    agendamento = models.OneToOneField(
+      'agendamento', 
+      on_delete=models.CASCADE, 
+      related_name='feedback'
+    )
+    cliente = models.ForeignKey(
+       settings.AUTH_USER_MODEL,
+       on_delete=models.CASCADE,
+       related_name='feedbacks_enviados'
+    )
+    atendente = models.ForeignKey(
+      settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name='feedbacks_recebidos'
+    )
+    comentario = models.TextField("Avaliação do Cliente")
+
+    nota = models.PositiveIntegerField(
+        "Nota",
+        choices=[(1, "1 ⭐"), (2, "2 ⭐"), (3, "3 ⭐"), (4, "4 ⭐"), (5, "5 ⭐")]
+    )
+
+    criado_em = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Feedback de {self.cliente.first_name} - {self.nota}⭐"
+   

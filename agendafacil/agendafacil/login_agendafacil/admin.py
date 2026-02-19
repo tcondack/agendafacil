@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from .models import Usuario, agendamento
+from .models import Usuario, Agendamento, feedback_cliente
 @admin.register(Usuario)
 class UsuarioAdmin(UserAdmin):
     model = Usuario
@@ -21,8 +21,12 @@ class UsuarioAdmin(UserAdmin):
     ordering = ('email',)
 
 
-@admin.register(agendamento)
-class agendamentoAdmin(admin.ModelAdmin):
+@admin.register(Agendamento)
+class AgendamentoAdmin(admin.ModelAdmin):
     list_display = ('cliente', 'data', 'horario', 'criado_em')
     list_filter = ('data',)
     search_fields = ('cliente__username',)
+
+@admin.register(feedback_cliente)
+class FeedbackAdmin(admin.ModelAdmin):
+    list_display = ('cliente', 'agendamento', 'nota', 'criado_em')    

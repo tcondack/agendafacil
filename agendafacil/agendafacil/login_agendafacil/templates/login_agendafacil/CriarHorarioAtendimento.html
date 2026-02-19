@@ -23,7 +23,7 @@
     </div>
             <div class="container">
                 <div class="divbtn">             
-            <p><strong>Bem-vindo, Administrador! </strong></p>
+            <p><strong>Bem-vindo, {{ request.user.first_name }}! </strong></p>
 <div>
     <form  class="form1" method="post">
         <label for="Data">Data</label>

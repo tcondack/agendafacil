@@ -13,9 +13,8 @@
         <img src="{% static 'imagens/logo001.png' %}" width=320px>
         <button class="menu-button" onclick="toggleMenu()">Menu</button>
         <div class="menu" id="menu">
-            <a href="{%url 'perfil_cliente' %}" class="button">Meu Perfil</a>
+            <a href="{%url 'painel_cliente' %}" class="button">Meu Painel</a>
             <a href="{% url 'agendamento_cliente'%}" class="button">Agendar</a>
-            <a href="{% url 'feedback_cliente'%}" class="button">Avaliação</a>
             <form action="{% url 'logout' %}" method="post">
                 {% csrf_token %}
                 <button type="submit" class="button">Sair</button>
@@ -24,7 +23,7 @@
     </div>
             <div class="container">
                 <div class="divbtn">             
-            <p><strong><h2>Bem-vindo, Cliente! </h2></strong></p>
+            <p><strong><h2>Bem-vindo, {{ request.user.first_name }}! </h2></strong></p>
                 <hr><center>
  <form method="POST" enctype="multipart/form-data">
             {% csrf_token %}

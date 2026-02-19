@@ -203,3 +203,11 @@ body{
     font-size: 20px;
     border-radius: 10px;
 }
+.alert {
+    background-color: #ffeeba;
+    color: #856404;
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    border: 1px solid #f5c6cb;
+}

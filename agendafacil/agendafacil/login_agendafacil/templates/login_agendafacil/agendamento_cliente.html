@@ -24,9 +24,8 @@
             <button class="menu-button" onclick="toggleMenu()">Menu</button>
             <div class="menu" id="menu">
                 <a href="{% url 'painel_cliente'%}" class="button">Pagina Inicial</a>
-                <a href="Dados Cliente.html" class="button">Meu Perfil</a>
-                <a href="Feedback.html" class="button">Avaliaçao</a>
-                <a href="Login Cliente.html" class="button">Sair</a>
+                <a href="{% url 'perfil_cliente'%}" class="button">Meu Perfil</a>
+                <a href="{% url 'logout'%}" class="button">Sair</a>
             </div>
     </div>
     <div class="container">   

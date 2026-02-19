@@ -24,26 +24,52 @@
     </div>
             <div class="container">
                 <div class="divbtn">             
-            <p><strong>Bem-vindo, Colaborador! </strong></p>
+            <p><strong>Bem-vindo, {{ request.user.first_name }}! </strong></p>
                 <hr><center>
                 <h2>Proximos Atendimentos</h2>
-                    <table>
-                        <tr class="topo">
-                            <th>Data</th><th>Horario</th><th>Nome</th><th>Visualizar</th>
-                        </tr>
-                        <tr class="linha A">
-                           <td>03/12/2024</td> <td>10:00</td><td>Maria</td><td><div id="passar_mouse">Mais<div id="mostrar">maria@gmail.com</div></td>
-                        </tr>
-                        <tr class="linha B">
-                            <td>03/12/2024</td> <td>11:00</td><td>Luiz</td><td><div id="passar_mouse">Mais<div id="mostrar">luiz@gmail.com</div></td>
-                         </tr>
-                         <tr class="linha A">
-                            <td>03/12/2024</td> <td>12:00</td><td>Vitor</td><td><div id="passar_mouse">Mais<div id="mostrar">vitor@gmail.com</div></td>
-                         </tr>
-                         <tr class="linha B">
-                            <td>03/12/2024</td> <td>13:00</td><td>Vitoria</td><td><div id="passar_mouse">Mais<div id="mostrar">Vitoria@gmail.com</div></td>
-                         </tr>
-                    </table>
+                   <h2>Agenda do Dia — {{ hoje|date:"d/m/Y" }}</h2>
+
+<table>
+    <tr class="topo">
+        <th>Data</th>
+        <th>Horário</th>
+        <th>Cliente</th>
+        <th>Status</th>
+        <th>Ação</th>
+    </tr>
+
+```
+{% for agendamento in agendamentos %}
+<tr>
+    <td>{{ agendamento.data|date:"d/m/Y" }}</td>
+    <td>{{ agendamento.horario }}</td>
+    <td>{{ agendamento.cliente.first_name }}</td>
+    <td>{{ agendamento.get_status_display }}</td>
+
+    <td>
+        <form action="{% url 'alterar_status' agendamento.id 'CONFIRMADO' %}" method="post">
+            {% csrf_token %}
+            <button type="submit">Confirmar</button>
+        </form>
+        <form action="{% url 'alterar_status' agendamento.id 'ATENDIDO' %}" method="post">
+            {% csrf_token %}
+            <button type="submit">Atendido</button>
+        </form>
+        <form action="{% url 'alterar_status' agendamento.id 'FALTA' %}" method="post">
+            {% csrf_token %}
+            <button type="submit">Falta</button>
+        </form>
+    </td>
+</tr>
+{% empty %}
+<tr>
+    <td colspan="5">Nenhum agendamento hoje</td>
+</tr>
+{% endfor %}
+```
+
+</table>
+
                 <br><br>   
                 </div>  
             </center>

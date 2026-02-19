@@ -17,7 +17,6 @@
         <div class="menu" id="menu">
             <a href="{% url 'perfil_cliente'%}" class="button">Meu Perfil</a>
             <a href="{% url 'agendamento_cliente'%}" class="button">Agendar</a>
-            <a href="{% url 'feedback_cliente'%}" class="button">Avaliação</a>
             <form action="{% url 'logout' %}" method="post">
                 {% csrf_token %}
                 <button type="submit" class="button">Sair</button>
@@ -26,7 +25,7 @@
     </div>
             <div class="container">
                 <div class="divbtn">             
-            <p><strong><h2>Bem-vindo, Cliente! </h2></strong></p>
+            <p><strong><h2>Bem-vindo, {{ request.user.first_name }}! </h2></strong></p>
                 <hr><center>
                 <div class="container">
                 <div id="passar_mouse"><h3>Meus agendamentos</h3> 
@@ -46,6 +45,12 @@
     <tr>
         <td colspan="2">Nenhum agendamento encontrado.</td>
     </tr>
+    <td>
+        <a class="btn btn-success"
+           href="{% url 'feedback_cliente' agendamento.id %}">
+           Avaliar atendimento
+        </a>
+    </td>
     {% endfor %}
    </table>                      
 

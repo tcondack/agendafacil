@@ -1,7 +1,12 @@
+from urllib import request
+
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import redirect, render
-from .forms import UsuarioForm, UsuarioUpdateForm
-from .models import Usuario, agendamento
+from django.shortcuts import get_object_or_404, redirect, render
+from .forms import UsuarioForm, UsuarioUpdateForm, FeedbackForm
+from .models import Usuario, Agendamento
+from datetime import date
+from django.contrib import messages
+from django.views.decorators.http import require_POST
 
 def index_login(request):
     return render(request, 'login_agendafacil/index_login.html')
@@ -30,7 +35,7 @@ def redirect_pos_login(request):
         return redirect('painel_admin')
 
     elif request.user.tipo_usuario == 'ATENDENTE':
-        return redirect('painel_colaborador')
+        return redirect('painel_atendente')
 
     elif request.user.tipo_usuario == 'CLIENTE':
         return redirect('painel_cliente')
@@ -41,7 +46,7 @@ def redirect_pos_login(request):
 
     ## Paines de acordo com o tipo de usuário
 
-##paineis admin    
+##PAINEIS ADMIN    
 @login_required
 def painel_admin(request):
     return render(request, 'login_agendafacil/painel_admin.html')
@@ -52,27 +57,57 @@ def dados_admin(request):
 def gerenciamento_usuarios(request):
     return render(request, 'login_agendafacil/gerenciamento_usuarios.html')
 
-##paineis colaborador
+## PAINÉIS COLABORADOR
 @login_required
-def painel_colaborador(request):
+def painel_atendente(request):
     if request.user.tipo_usuario != 'ATENDENTE':
         return redirect('redirect_pos_login')
-    return render(request, 'login_agendafacil/painel_colaborador.html')
+    
+    hoje = date.today()
+    agendamentos = Agendamento.objects.filter(
+        data = hoje
+    ).order_by('horario')
+    
+    context = {
+        'agendamentos': agendamentos,
+        'hoje': hoje
+    }
+
+    return render(request, 'login_agendafacil/painel_atendente.html', context)
 @login_required
-def perfil_colaborador(request):
+def perfil_atendente(request):
     if request.user.tipo_usuario != 'ATENDENTE':
         return redirect('redirect_pos_login')
-    return render(request, 'login_agendafacil/perfil_colaborador.html')
+    return render(request, 'login_agendafacil/perfil_atendente.html')
 @login_required
-def atendimento_colaborador(request):
+def atendimento_atendente(request):
     if request.user.tipo_usuario != 'ATENDENTE':
         return redirect('redirect_pos_login')
-    return render(request, 'login_agendafacil/atendimento_colaborador.html')
+    return render(request, 'login_agendafacil/atendimento_atendente.html')
 @login_required
-def dados_colaborador(request):
+def dados_atendente(request):
     if request.user.tipo_usuario != 'ATENDENTE':
         return redirect('redirect_pos_login')
-    return render(request, 'login_agendafacil/dados_colaborador.html')
+    return render(request, 'login_agendafacil/dados_atendente.html')
+
+
+## alteração status agendamento
+@login_required
+def alterar_status(request, agendamento_id, status):
+    if request.user.tipo_usuario != 'ATENDENTE':
+        return redirect('redirect_pos_login')
+    
+    agendamento = get_object_or_404(Agendamento, id=agendamento_id) 
+    status_validos = ['CONFIRMADO', 'ATENDIDO', 'FALTOU']
+    if status not in status_validos:
+        return redirect('painel_atendente')
+
+    agendamento.status= status
+    agendamento.save()
+    return redirect('painel_atendente')
+
+
+
 
 
 ##paineis cliente
@@ -109,7 +144,26 @@ def agendamento_cliente(request):
 def feedback_cliente(request):
     if request.user.tipo_usuario != 'CLIENTE':
         return redirect('redirect_pos_login')
-    return render(request, 'login_agendafacil/feedback_cliente.html')   
+    
+    agendamentos= Agendamento.objects.filter(cliente=request.user, status='ATENDIDO')
+    
+    if not agendamentos.exists():
+        messages.warning(request, "Você ainda não possui atendimentos concluídos para avaliar.")
+        return redirect('painel_cliente')
+    
+
+    agendamentos = Agendamento.objects.filter(cliente=request.user)
+    if request.method == 'POST':
+        form = FeedbackForm(request.POST)
+        if form.is_valid():
+            feedback = form.save(commit=False)
+            feedback.cliente = request.user
+            feedback.save()
+            return redirect('painel_cliente')
+    else:        form = FeedbackForm()
+    form.fields['agendamento'].queryset = agendamentos
+
+    return render(request, 'login_agendafacil/feedback_cliente.html', {'form': form})   
 
 
 @login_required
@@ -129,12 +183,12 @@ def agendamento_cliente(request):
         data = request.POST.get('data')
         horario = request.POST.get('horario')
 
-        agendamento.objects.create(
+        Agendamento.objects.create(
             cliente=request.user,
             data=data,
             horario=horario
         )
-        return redirect('perfil_cliente')
+        return redirect('painel_cliente')
     return render(request, 'login_agendafacil/agendamento_cliente.html')
 
 ##
@@ -142,8 +196,12 @@ def agendamento_cliente(request):
 def painel_cliente(request):
     if request.user.tipo_usuario != 'CLIENTE':
         return redirect('redirect_pos_login')
-    
-    agendamentos = agendamento.objects.filter(cliente=request.user
-    ).order_by('data', 'horario')
+    agendamentos = Agendamento.objects.filter(
+        cliente=request.user
+    ).order_by('-data', '-horario')
+
+    return render(request, 'login_agendafacil/painel_cliente.html', {
+        'agendamentos': agendamentos
+    })
     return render(request, 'login_agendafacil/painel_cliente.html', {'agendamentos': agendamentos})
     

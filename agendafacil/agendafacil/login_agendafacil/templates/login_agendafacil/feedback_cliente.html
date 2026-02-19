@@ -27,31 +27,43 @@
         <button class="menu-button" onclick="toggleMenu()">Menu</button>
         <div class="menu" id="menu">
             <a href="{% url 'perfil_cliente'%}" class="button">Meu Perfil</a>
-            <a href="Dados Cliente.html" class="button">Meu Perfil</a>
-            <a href="Agendamento.html" class="button">Agendar</a>
-            <a href="Login Cliente.html" class="button">Sair</a>
+            <a href="{% url 'agendamento_cliente'%}" class="button">Agendar</a>
+            <a href="{% url 'logout'%}" class="button">Sair</a>
        </div>
        </div>
     <div class="container">   
-        <h1><center>DEIXE SUA AVALIAÇÃO</center></h1> 
-            <div class="container2">
-                <H2><center>A sua avaliação é muito importante para nós!</center></H2>
-                <form class="form1" action="Feedback Recebido.html">
-                    <label for="name">Nome:</label>
-                    <input type="text" id="name" placeholder="Digite seu nome" required>
-                    <label for="Name">Email:</label>
-                    <input type="email" id="Email" placeholder="exemplo@unifesonaf.com" required="">
-                    <label for="Name">Conte como foi sua experiência!</label>
-                    <textarea id="feedback" placeholder="Deixe aqui sua avaliação..." required=""></textarea>
-                    <button class="btn" type="submit">Enviar</button>
-                </form><br>
-            </div>
-            <br><br>
+       <h2>Avaliar Atendimento</h2>
+
+{% if messages %}
+    {% for message in messages %}
+        <div class="alert">
+            {{ message }}
+        </div>
+    {% endfor %}
+{% endif %}
+
+<form method="POST">
+    {% csrf_token %}
+
+    <label>Qual atendimento deseja avaliar?</label>
+    {{ form.agendamento }}
+    <br><br>
+
+    <label>Nota:</label>
+    {{ form.nota }}
+    <br><br>
+
+    <label>Comentário:</label>
+    {{ form.comentario }}
+    <br><br>
+
+    <button type="submit">Enviar Feedback</button>
+</form>
     </div>
     <br><br>
     <br><br>
 <div class="site-footer">
-Copyright © 2024.
+Copyright © 2026 — Desenvolvido com 💚 em Teresópolis.
 </div>
 </body>
 </html>
