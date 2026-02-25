@@ -1,0 +1,97 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agenda Fácil NAF</title>
+    <link rel="icon" type="image/ico" href="{% static 'imagens/ICON003.ico' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <script src="{% static 'login_agendafacil/js/index.js' %}"></script>
+</head>
+<body>  
+    <div class="site-header">
+        <img src="{% static 'imagens/logo001.png' %}" width=320px>
+        <button class="menu-button" onclick="toggleMenu()">Menu</button>
+        <div class="menu" id="menu">
+            <a href="{% url 'painel_atendente' %}" class="button">Meu Painel</a>
+            <a href="{% url 'perfil_atendente' %}" class="button">Meu Perfil</a>
+            <form action="{% url 'logout' %}" method="post">
+                {% csrf_token %}
+                <button type="submit" class="button">Sair</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="container">
+        <p><strong><h2>Bem-vindo, {{ request.user.first_name }}!</h2></strong></p>
+        <center><h1>Editar Perfil</h1></center>
+
+        {% if request.user.foto_perfil %}
+            <img class="cliente01" src="{{ request.user.foto_perfil.url }}">
+        {% else %}
+            <img class="cliente01" src="{% static 'imagens/Cliente01.jpg' %}">
+        {% endif %}
+
+        {% if messages %}
+            {% for message in messages %}
+                <p class="alert alert-{{ message.tags }}" style="text-align:center;">{{ message }}</p>
+            {% endfor %}
+        {% endif %}
+
+        <form method="POST" enctype="multipart/form-data" class="form1">
+            {% csrf_token %}
+
+            <label>Nome:</label>
+            {{ form.first_name }}{{ form.first_name.errors }}
+
+            <label>Sobrenome:</label>
+            {{ form.last_name }}{{ form.last_name.errors }}
+
+            <label>Email:</label>
+            {{ form.email }}{{ form.email.errors }}
+
+            <label>Telefone:</label>
+            {{ form.telefone }}{{ form.telefone.errors }}
+
+            <hr style="width:60%;">
+            <h3>Endereço</h3>
+
+            <label>CEP:</label>
+            {{ form.cep }}{{ form.cep.errors }}
+
+            <label>Rua:</label>
+            {{ form.logradouro }}{{ form.logradouro.errors }}
+
+            <label>Número:</label>
+            {{ form.numero }}{{ form.numero.errors }}
+
+            <label>Complemento:</label>
+            {{ form.complemento }}{{ form.complemento.errors }}
+
+            <label>Bairro:</label>
+            {{ form.bairro }}{{ form.bairro.errors }}
+
+            <label>Cidade:</label>
+            {{ form.cidade }}{{ form.cidade.errors }}
+
+            <label>Estado:</label>
+            {{ form.estado }}{{ form.estado.errors }}
+
+            <hr style="width:60%;">
+            <label>Foto de Perfil:</label>
+            {{ form.foto_perfil }}{{ form.foto_perfil.errors }}
+
+            <br><br>
+            <button class="btn" type="submit">Salvar Alterações</button>
+            &nbsp;
+            <a href="{% url 'perfil_cliente' %}"><button class="btn bt5" type="button">Cancelar</button></a>
+        </form>
+        <br><br>
+    </div>
+
+    <div class="site-footer">
+        Copyright © 2026 — Desenvolvido com 💚 em Teresópolis.
+    </div>
+</body>
+</html>

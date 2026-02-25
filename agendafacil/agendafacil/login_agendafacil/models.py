@@ -47,45 +47,32 @@ class Usuario(AbstractUser):
         return self.username  
    
 class Agendamento(models.Model):
-    cliente = models.ForeignKey(
-    settings.AUTH_USER_MODEL, 
-    on_delete=models.CASCADE,
-    related_name='agendamentos')
-
-    data = models.DateField()
-    horario = models.TimeField()
-    criado_em = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return f'{self.data} - {self.horario}'
-
     STATUS_CHOICES = (
         ('AGENDADO', 'Agendado'),
-        ('CANCELADO', 'Cancelado'),
-        ('CONFIRMADO', 'Confirmado'),
         ('ATENDIDO', 'Atendido'),
+        ('CANCELADO', 'Cancelado'),
         ('FALTOU', 'Faltou'),
-        ('PENDENTE', 'Pendente')
-       )
-    cliente = models.ForeignKey('Usuario', on_delete=models.CASCADE)
-    data = models.DateField()
-    horario = models.TimeField()
-
-    status = models.CharField(
-        max_length=15,
-        choices=STATUS_CHOICES,
-        default='PENDENTE',
     )
-    criado_em = models.DateTimeField(auto_now_add=True)
-    
+
+    cliente = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name='agendamentos',
+        limit_choices_to={'tipo_usuario': 'CLIENTE'}
+    )
+    status = models.CharField(
+        max_length=15, 
+        choices=STATUS_CHOICES, 
+        default='AGENDADO'
+        )
+    criado_em = models.DateTimeField(auto_now_add=True)    
 
     def __str__(self):
-     return f"{self.cliente} - {self.data} {self.horario}"
-
-
-class feedback_cliente(models.Model):
+        return f"{self.cliente} - {self.get_status_display()} ({self.criado_em.strftime('%d/%m/%Y')})"
+   
+class FeedbackCliente(models.Model):
     agendamento = models.OneToOneField(
-      'agendamento', 
+      Agendamento, 
       on_delete=models.CASCADE, 
       related_name='feedback'
     )
@@ -97,7 +84,9 @@ class feedback_cliente(models.Model):
     atendente = models.ForeignKey(
       settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
-        related_name='feedbacks_recebidos'
+        related_name='feedbacks_recebidos',
+        null=True,    
+        blank=True,
     )
     comentario = models.TextField("Avaliação do Cliente")
 
@@ -111,3 +100,40 @@ class feedback_cliente(models.Model):
     def __str__(self):
         return f"Feedback de {self.cliente.first_name} - {self.nota}⭐"
    
+class Atendimento(models.Model):
+    agendamento = models.OneToOneField(
+        Agendamento, 
+        on_delete=models.CASCADE,
+        related_name='atendimento'
+    )
+    atendente = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name='atendimentos_realizados',
+        limit_choices_to={'tipo_usuario': 'ATENDENTE'}
+    )
+    descricao_procedimento = models.TextField("Descrição do Atendimento")
+    observacoes_atendimento = models.TextField("Observações do Atendimento", blank=True, null=True)
+    criado_em = models.DateTimeField(auto_now_add=True) 
+
+    def __str__(self):
+        return f"Atendimento de {self.atendente.first_name} - {self.agendamento.data} {self.agendamento.horario}"
+    
+class HorarioAtendimento(models.Model):
+    data = models.DateField()
+    horario = models.TimeField()
+
+    atendente = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name='horarios_atendimentos',
+        limit_choices_to={'tipo_usuario': 'ATENDENTE'}
+    )
+    disponivel = models.BooleanField(default=True) 
+
+    class Meta:
+        unique_together = ('data', 'horario', 'atendente')
+        ordering = ['data', 'horario']  
+    def __str__(self):
+        return f"{self.data} {self.horario} - {self.atendente}"
+    

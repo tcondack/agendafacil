@@ -1,5 +1,5 @@
 from django import forms
-from .models import Usuario, feedback_cliente
+from .models import Usuario, FeedbackCliente, Atendimento
 from django.contrib.auth.forms import UserCreationForm
 
 ## criação de usuário
@@ -34,6 +34,7 @@ class UsuarioUpdateForm(forms.ModelForm):
         model = Usuario
         fields = [
             'first_name',
+            'last_name',
             'email',
             'telefone',
             'foto_perfil',
@@ -48,7 +49,7 @@ class UsuarioUpdateForm(forms.ModelForm):
 
 class FeedbackForm(forms.ModelForm):
     class Meta:
-        model = feedback_cliente
+        model = FeedbackCliente
         fields = ['agendamento','nota', 'comentario']
         labels = {
             'agendamento': 'Qual atendimento você deseja avaliar?',
@@ -61,3 +62,20 @@ class FeedbackForm(forms.ModelForm):
                 'class': 'form-control'
             })
         }
+
+class AtendimentoForm(forms.ModelForm):
+    class Meta:
+        model = Atendimento
+        fields = ['descricao_procedimento', 'observacoes_atendimento']
+        labels = {'descricao_procedimento': 'Descrição do Atendimento',
+                    'observacoes_atendimento': 'Observações do Atendimento'}
+        widgets = {'descricao_procedimento': forms.Textarea(attrs={
+                    'placeholder': 'Descreva o atendimento realizado...',
+                    'class': 'form-control'
+                }),
+                    'observacoes_atendimento': forms.Textarea(attrs={
+                    'placeholder': 'Adicione observações relevantes...',
+                    'class': 'form-control'
+                })}
+
+     

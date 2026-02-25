@@ -1,0 +1,60 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agenda Fácil NAF</title>
+    <link rel="icon" type="image/ico" href="{% static 'imagens/ICON003.ico' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <script src="{% static 'login_agendafacil/js/index.js' %}"></script>
+
+</head>
+<body>  
+    <div class="site-header">
+        <img src="{% static 'imagens/logo001.png' %}" width=320px>
+        <button class="menu-button" onclick="toggleMenu()">Menu</button>
+        <div class="menu" id="menu">
+            <a href="{% url 'painel_admin' %}" class="button">Pagina Inicial</a>
+            <form action="{% url 'logout' %}" method="post">
+                {% csrf_token %}
+                <button type="submit" class="button">Sair</button>
+            </form>
+       </div>
+    </div>
+            <div class="container">
+                <div class="divbtn">             
+            <p><strong>Bem-vindo, {{ request.user.first_name }}! </strong></p>
+            <hr>
+               <center><h1>Feedback recebidos</h1></center>
+                <div class="container">
+        <p><strong>Bem-vindo, {{ request.user.first_name }}!</strong></p>
+        <hr>
+        <center><h1>Feedbacks Recebidos</h1></center>
+
+        {% if feedbacks %}
+            {% for feedback in feedbacks %}
+            <div class="container">
+                <strong>{{ feedback.cliente.first_name }} {{ feedback.cliente.last_name }}</strong>
+                {% if feedback.atendente %}
+                    <span style="color:gray; font-size:0.9em;"> — Atendente: {{ feedback.atendente.first_name }}</span>
+                {% endif %}
+                <span style="float:right; color:gray; font-size:0.9em;">{{ feedback.criado_em|date:"d/m/Y" }}</span>
+                <hr>
+                <p>{% for i in "12345" %}{% if forloop.counter <= feedback.nota %}⭐{% endif %}{% endfor %}</p>
+                <p>{{ feedback.comentario }}</p>
+                <br>
+            </div>
+            {% endfor %}
+        {% else %}
+            <center><p>Nenhum feedback recebido ainda.</p></center>
+        {% endif %}
+        <br><br>
+    </div>
+
+    <div class="site-footer">
+        Copyright © 2026 — Desenvolvido com 💚 em Teresópolis.
+    </div>
+</body>
+</html>
+

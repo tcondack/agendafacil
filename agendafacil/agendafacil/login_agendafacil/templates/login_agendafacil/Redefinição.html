@@ -1,21 +1,16 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Redefinição de senha</title>
-    <link rel="icon" type="image/ico" href="IMAGENS/ICON003.ico">
-    <link rel="stylesheet" href="style.css">
-    <script src="JS/Index.js" type="text/javascript"></script>
-        <style>
-           input{
-                    padding: 1%;
-                    border: 1px;
-                }
- </style>
+    <title>Agenda Fácil NAF</title>
+    <link rel="icon" type="image/ico" href="{% static 'imagens/ICON003.ico' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <script src="{% static 'login_agendafacil/js/index.js' %}"></script>
 </head>
 <body>  
-    <div class="site-header"><img src="IMAGENS/logo001.png" width=320px>
+    <div class="site-header"><img src="{% static 'imagens/logo001.png' %}" width=320px>
     </div>
     <center> 
         <div class="container">              

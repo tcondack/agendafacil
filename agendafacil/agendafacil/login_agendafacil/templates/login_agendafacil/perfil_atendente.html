@@ -7,49 +7,54 @@
     <title>Agenda Fácil NAF</title>
     <link rel="icon" type="image/ico" href="{% static 'imagens/ICON003.ico' %}">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
-    <script src="{% static 'js/index.js' %}"></script>
+    <script src="{% static 'login_agendafacil/js/index.js' %}"></script>
 </head>
-<body>
 <body>  
     <div class="site-header">
         <img src="{% static 'imagens/logo001.png' %}" width=320px>
         <button class="menu-button" onclick="toggleMenu()">Menu</button>
         <div class="menu" id="menu">
-            <a href="{% url 'perfil_colaborador' %}" class="button">Meu Perfil</a>
-            <a href="{% url 'atendimento_colaborador' %}" class="button">Atendimento</a>
-            <a href="{% url 'logout' %}" class="button">Sair</a>
+            <a href="{% url 'lista_atendimentos'%}"class="button">Meus Atendimentos</a>
+            <form action="{% url 'logout' %}" method="post">
+                {% csrf_token %}
+                <button type="submit" class="button">Sair</button>
+            </form>
        </div>
+<div class="container">
+        <p><strong><h2>Bem-vindo, {{ request.user.first_name }}!</h2></strong></p>
+        <center><h1>Meu Perfil</h1></center>
+
+        {% if request.user.foto_perfil %}
+            <img class="cliente01" src="{{ request.user.foto_perfil.url }}">
+        {% else %}
+            <img class="cliente01" src="{% static 'imagens/Cliente01.jpg' %}">
+        {% endif %}
+
+        <table class="Dados-Cliente">
+            <tr class="A1"><td><strong>NOME:</strong> {{ request.user.first_name }} {{ request.user.last_name }}</td></tr>
+            
+            <tr class="B1"><td><strong>CPF:</strong> {{ request.user.CPF|default:"Não informado" }}</td></tr>
+            <tr class="A1"><td><strong>CELULAR:</strong> {{ request.user.telefone|default:"Não informado" }}</td></tr>
+            <tr class="B1"><td><strong>E-MAIL:</strong> {{ request.user.email }}</td></tr>
+            <tr class="A1"><td><strong>CEP:</strong> {{ request.user.cep|default:"Não informado" }}</td></tr>
+            <tr class="B1"><td><strong>ENDEREÇO:</strong> {{ request.user.logradouro|default:"Não informado" }}{% if request.user.numero %}, {{ request.user.numero }}{% endif %}{% if request.user.complemento %} - {{ request.user.complemento }}{% endif %}</td></tr>
+            <tr class="A1"><td><strong>BAIRRO:</strong> {{ request.user.bairro|default:"Não informado" }}</td></tr>
+            <tr class="B1"><td><strong>CIDADE:</strong> {{ request.user.cidade|default:"Não informado" }}</td></tr>
+            <tr class="A1"><td><strong>ESTADO:</strong> {{ request.user.estado|default:"Não informado" }}</td></tr>
+        </table>
+
+        <center>
+            <br>
+            <a href="{% url 'editar_perfil_atendente' %}">
+                <button class="btn">Editar Dados</button>
+            </a>
+        </center>
+        <br><br>
     </div>
-            <div class="container">
-                <div class="divbtn">             
-            <p><strong>Bem-vindo, {{ request.user.first_name }}! </strong></p>
-                <hr><center>
-                <h2>Proximos Atendimentos</h2>
-                    <table>
-                        <tr class="topo">
-                            <th>Data</th><th>Horario</th><th>Nome</th><th>Visualizar</th>
-                        </tr>
-                        <tr class="linha A">
-                           <td>03/12/2024</td> <td>10:00</td><td>Maria</td><td><div id="passar_mouse">Mais<div id="mostrar">maria@gmail.com</div></td>
-                        </tr>
-                        <tr class="linha B">
-                            <td>03/12/2024</td> <td>11:00</td><td>Luiz</td><td><div id="passar_mouse">Mais<div id="mostrar">luiz@gmail.com</div></td>
-                         </tr>
-                         <tr class="linha A">
-                            <td>03/12/2024</td> <td>12:00</td><td>Vitor</td><td><div id="passar_mouse">Mais<div id="mostrar">vitor@gmail.com</div></td>
-                         </tr>
-                         <tr class="linha B">
-                            <td>03/12/2024</td> <td>13:00</td><td>Vitoria</td><td><div id="passar_mouse">Mais<div id="mostrar">Vitoria@gmail.com</div></td>
-                         </tr>
-                    </table>
-                <br><br>   
-                </div>  
-            </center>
-        </div>
         <br><br>
         <br><br>
-        <div class="site-footer">
-            Copyright © 2024.
-        </div>
+<div class="site-footer">
+    Copyright © 2026 — Desenvolvido com 💚 em Teresópolis.
+</div>
 </body>
 </html>

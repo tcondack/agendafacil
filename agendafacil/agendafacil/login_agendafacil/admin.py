@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from .models import Usuario, Agendamento, feedback_cliente
+from .models import Usuario, Agendamento, FeedbackCliente
 @admin.register(Usuario)
 class UsuarioAdmin(UserAdmin):
     model = Usuario
@@ -23,10 +23,17 @@ class UsuarioAdmin(UserAdmin):
 
 @admin.register(Agendamento)
 class AgendamentoAdmin(admin.ModelAdmin):
-    list_display = ('cliente', 'data', 'horario', 'criado_em')
-    list_filter = ('data',)
-    search_fields = ('cliente__username',)
+    list_display = ('cliente', 'get_data', 'get_horario', 'criado_em')
+    list_filter = ('status',)
+    def get_data(self, obj):
+            return obj.horario.data
+            get_data.short_description = 'Data'
 
-@admin.register(feedback_cliente)
+    def get_horario(self, obj):
+            return obj.horario.horario
+            get_horario.short_description = 'Horário'
+
+
+@admin.register(FeedbackCliente)
 class FeedbackAdmin(admin.ModelAdmin):
     list_display = ('cliente', 'agendamento', 'nota', 'criado_em')    

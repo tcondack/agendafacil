@@ -1,0 +1,55 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agenda Fácil NAF</title>
+    <link rel="icon" type="image/ico" href="{% static 'imagens/ICON003.ico' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <script src="{% static 'login_agendafacil/js/index.js' %}"></script>
+</head>
+<body>  
+    <div class="site-header">
+        <img src="{% static 'imagens/logo001.png' %}" width=320px>
+        <button class="menu-button" onclick="toggleMenu()">Menu</button>
+        <div class="menu" id="menu">
+            <a href="{% url 'perfil_atendente' %}" class="button">Meu Perfil</a>
+            <a href="{% url 'lista_atendimentos' %}" class="button">Meus Atendimentos</a>
+            <form action="{% url 'logout' %}" method="post">
+                {% csrf_token %}
+                <button type="submit" class="button">Sair</button>
+            </form>
+       </div>
+<div class="container">
+
+    <h2>Registrar Atendimento</h2>
+
+    <hr>
+
+    <h3>Dados do Cliente</h3>
+    <p><strong>Nome:</strong> {{ agendamento.cliente.first_name }} {{ agendamento.cliente.last_name }}</p>
+    <p><strong>Email:</strong> {{ agendamento.cliente.email }}</p>
+    <p><strong>Data:</strong> {{ agendamento.data }}</p>
+    <p><strong>Horário:</strong> {{ agendamento.horario }}</p>
+
+    <hr>
+
+    <form method="post">
+        {% csrf_token %}
+
+        <label>Descrição do Atendimento:</label>
+        {{ form.descricao_procedimento }}
+
+        <label>Observações Internas:</label>
+        {{ form.observacoes_internas }}
+
+        <button type="submit">Finalizar Atendimento</button>
+    </form>
+
+</div>
+<div class="site-footer">
+    Copyright © 2026 — Desenvolvido com 💚 em Teresópolis.
+</div>
+</body>
+</html>

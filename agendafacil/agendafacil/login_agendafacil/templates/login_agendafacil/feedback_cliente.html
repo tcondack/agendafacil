@@ -8,6 +8,7 @@
     <link rel="icon" type="image/ico" href="{% static 'imagens/ICON003.ico' %}">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <script src="{% static 'js/index.js' %}"></script>
+    <script src="{% static 'login_agendafacil/js/index.js' %}"></script>
 </head>
 <body>
 <body>  
@@ -28,7 +29,10 @@
         <div class="menu" id="menu">
             <a href="{% url 'perfil_cliente'%}" class="button">Meu Perfil</a>
             <a href="{% url 'agendamento_cliente'%}" class="button">Agendar</a>
-            <a href="{% url 'logout'%}" class="button">Sair</a>
+            <form action="{% url 'logout' %}" method="post">
+                {% csrf_token %}
+                <button type="submit" class="button">Sair</button>
+            </form>
        </div>
        </div>
     <div class="container">   
@@ -40,6 +44,11 @@
             {{ message }}
         </div>
     {% endfor %}
+{% endif %}
+{% if not agendamentos_disponiveis %}
+    <div class="alert alert-warning">
+        Você não possui atendimentos disponíveis para avaliar.
+    </div>
 {% endif %}
 
 <form method="POST">

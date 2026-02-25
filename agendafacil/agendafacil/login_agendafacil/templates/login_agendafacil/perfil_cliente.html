@@ -7,7 +7,7 @@
     <title>Agenda Fácil NAF</title>
     <link rel="icon" type="image/ico" href="{% static 'imagens/ICON003.ico' %}">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
-</head>
+    <script src="{% static 'login_agendafacil/js/index.js' %}"></script>
 <body>  
     <div class="site-header">
         <img src="{% static 'imagens/logo001.png' %}" width=320px>
@@ -15,80 +15,48 @@
         <div class="menu" id="menu">
             <a href="{%url 'painel_cliente' %}" class="button">Meu Painel</a>
             <a href="{% url 'agendamento_cliente'%}" class="button">Agendar</a>
+            <a href="{% url 'feedback_cliente' %}" class="button">Avaliar</a>
             <form action="{% url 'logout' %}" method="post">
                 {% csrf_token %}
                 <button type="submit" class="button">Sair</button>
             </form>
        </div>
     </div>
-            <div class="container">
-                <div class="divbtn">             
-            <p><strong><h2>Bem-vindo, {{ request.user.first_name }}! </h2></strong></p>
-                <hr><center>
- <form method="POST" enctype="multipart/form-data">
-            {% csrf_token %}
+    <div class="container">
+        <p><strong><h2>Bem-vindo, {{ request.user.first_name }}!</h2></strong></p>
+        <center><h1>Meu Perfil</h1></center>
 
-            <label>Nome:</label>
-            {{ form.first_name }}
+        {% if request.user.foto_perfil %}
+            <img class="cliente01" src="{{ request.user.foto_perfil.url }}">
+        {% else %}
+            <img class="cliente01" src="{% static 'imagens/Cliente01.jpg' %}">
+        {% endif %}
+
+        <table class="Dados-Cliente">
+            <tr class="A1"><td><strong>NOME:</strong> {{ request.user.first_name }} {{ request.user.last_name }}</td></tr>
+            
+            <tr class="B1"><td><strong>CPF:</strong> {{ request.user.CPF|default:"Não informado" }}</td></tr>
+            <tr class="A1"><td><strong>CELULAR:</strong> {{ request.user.telefone|default:"Não informado" }}</td></tr>
+            <tr class="B1"><td><strong>E-MAIL:</strong> {{ request.user.email }}</td></tr>
+            <tr class="A1"><td><strong>CEP:</strong> {{ request.user.cep|default:"Não informado" }}</td></tr>
+            <tr class="B1"><td><strong>ENDEREÇO:</strong> {{ request.user.logradouro|default:"Não informado" }}{% if request.user.numero %}, {{ request.user.numero }}{% endif %}{% if request.user.complemento %} - {{ request.user.complemento }}{% endif %}</td></tr>
+            <tr class="A1"><td><strong>BAIRRO:</strong> {{ request.user.bairro|default:"Não informado" }}</td></tr>
+            <tr class="B1"><td><strong>CIDADE:</strong> {{ request.user.cidade|default:"Não informado" }}</td></tr>
+            <tr class="A1"><td><strong>ESTADO:</strong> {{ request.user.estado|default:"Não informado" }}</td></tr>
+        </table>
+
+        <center>
             <br>
-
-            <label>Email:</label>
-            {{ form.email }}
-            <br>
-
-            <label>Telefone:</label>
-            {{ form.telefone }}
-            <br>
-
-            <hr>
-
-            <h3>Endereço</h3>
-
-            <label>CEP:</label>
-            {{ form.cep }}
-            <br>
-
-            <label>Rua:</label>
-            {{ form.logradouro }}
-            <br>
-
-            <label>Número:</label>
-            {{ form.numero }}
-            <br>
-
-            <label>Complemento:</label>
-            {{ form.complemento }}
-            <br>
-
-            <label>Bairro:</label>
-            {{ form.bairro }}
-            <br>
-
-            <label>Cidade:</label>
-            {{ form.cidade }}
-            <br>
-
-            <label>Estado:</label>
-            {{ form.estado }}
-            <br>
-
-            <hr>
-
-            <label>Foto:</label>
-            {{ form.foto_perfil }}
-            <br><br>
-
-            <button class="btn" type="submit">Salvar Alterações</button>
-        </form>
-<br>
-            </center>
-        </div>
+            <a href="{% url 'editar_perfil_cliente' %}">
+                <button class="btn">Editar Dados</button>
+            </a>
+        </center>
+        <br><br>
+    </div>
         <br><br>
         <br><br>
-        <div class="site-footer">
-Copyright © 2026 — Desenvolvido com 💚 em Teresópolis.
-        
+<div class="site-footer">
+    Copyright © 2026 — Desenvolvido com 💚 em Teresópolis.
 </div>
-<script src="{% static 'login_agendafacil/js/index.js' %}"></script>
 </body>
 </html>

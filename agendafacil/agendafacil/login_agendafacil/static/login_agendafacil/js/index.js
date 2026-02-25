@@ -6,15 +6,13 @@ function toggleMenu() {
         menu.style.display = 'block';
     }
 }       
-function toggleMenu() {
+document.addEventListener('click', function(event){
     const menu = document.getElementById('menu');
-    if (menu.style.display === 'block') {
-        menu.style.display = 'none';
-    } else {
-        menu.style.display = 'block';
+    const menuButton = document.querySelector('.menu-button');
+    if (menu && menuButton && !menu.contains(event.target) && !menuButton.contains(event.target)){
+        menu.style.display = 'none'
     }
-}       
-
+})
 function validarSenha() {
     let Senha = document.getElementById('Senha');
     let SenhaC = document.getElementById('SenhaC');
@@ -31,6 +29,20 @@ function validarSenha() {
 
 
 document.addEventListener("DOMContentLoaded", function () {
+    // Máscaras automáticas
+    const mascaras = {
+        'id_CPF':      v => v.replace(/\D/g,'').replace(/(\d{3})(\d)/,'$1.$2').replace(/(\d{3})(\d)/,'$1.$2').replace(/(\d{3})(\d{1,2})$/,'$1-$2'),
+        'id_telefone': v => v.replace(/\D/g,'').replace(/^(\d{2})(\d)/,'($1) $2').replace(/(\d{5})(\d)/,'$1-$2'),
+        'id_cep':      v => v.replace(/\D/g,'').replace(/(\d{5})(\d)/,'$1-$2'),
+    };
+
+    Object.entries(mascaras).forEach(([id, fn]) => {
+        const el = document.getElementById(id);
+        if (el) el.addEventListener('input', function () { this.value = fn(this.value); });
+    });
+
+
+
 
     const cepInput = document.getElementById("id_cep");
     const form = document.querySelector("form");
@@ -95,3 +107,8 @@ function buscarCEP() {
         })
         .catch(() => alert("Erro ao buscar CEP"));
 }
+// Fecha alertas ao clicar neles
+document.querySelectorAll('.alert').forEach(el => {
+    el.style.cursor = 'pointer';
+    el.addEventListener('click', () => el.style.display = 'none');
+    });
