@@ -1,10 +1,23 @@
-<p>
-    <a href="{% url 'login' %}"> app_agenda_facil</a>
-    {% if user.is_autenticated }
-        Olá, {{user.username}}
-        {% else %}
-            <a href="{% url 'login' %}">Entrar</a>
-            {% endif %}
-</p>
+{% extends 'app_agendafacil/base.html' %}
 
-{% blockcontent %}{% endblock content %}
+{% block title %}Início - Agenda Fácil NAF{% endblock %}
+
+{% block content %}
+
+<center>
+    <h2>Bem-Vindo ao Núcleo de Apoio Contábil e Fiscal.</h2>
+
+    <p>
+        Desde o seu lançamento em 2020, o NAF tem se destacado como uma referência
+        na prestação de serviços contábeis e fiscais.
+    </p>
+
+    <p>
+        O NAF é uma parceria com instituições de ensino superior,
+        envolvendo Administração, Ciências Contábeis e Direito.
+    </p>
+
+    <img src="{% static 'imagens/logo002.png' %}" width="150px">
+</center>
+
+{% endblock %}

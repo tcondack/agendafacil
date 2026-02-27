@@ -15,7 +15,6 @@
         <button class="menu-button" onclick="toggleMenu()">Menu</button>
         <div class="menu" id="menu">
             <a href="{% url 'painel_admin' %}" class="button">Página Inicial</a>
-            <a href="{% url 'dados_admin' %}" class="button">Dados</a>
             <a href="{% url 'visualizacao_feedback' %}" class="button">Feedbacks</a>
             <form action="{% url 'logout' %}" method="post">
                 {% csrf_token %}
@@ -23,51 +22,65 @@
             </form>
         </div>
     </div>
+<h2>Gerenciamento de Usuários</h2>
 
-    <div class="container">
-        <p><strong>Bem-vindo, {{ request.user.first_name }}!</strong></p>
-        <hr>
-        <center><h2>Gerenciar Usuários</h2></center>
+<table>
+    <tr>
+        <th>Nome</th>
+        <th>Email</th>
+        <th>Tipo</th>
+        <th>Status</th>
+        <th>Ações</th>
+    </tr>
 
-        <h3>Clientes</h3>
-        <table>
-            <tr class="topo">
-                <th>Nome</th><th>Email</th><th>CPF</th><th>Telefone</th>
-            </tr>
-            {% for cliente in clientes %}
-            <tr class="linha {% cycle 'A' 'B' %}">
-                <td>{{ cliente.first_name }} {{ cliente.last_name }}</td>
-                <td>{{ cliente.email }}</td>
-                <td>{{ cliente.CPF|default:"—" }}</td>
-                <td>{{ cliente.telefone|default:"—" }}</td>
-            </tr>
-            {% empty %}
-            <tr><td colspan="4" style="text-align:center;">Nenhum cliente cadastrado.</td></tr>
-            {% endfor %}
-        </table>
+    {% for usuario in usuarios %}
+    <tr>
+        <td>{{ usuario.get_full_name }}</td>
+        <td>{{ usuario.email }}</td>
+        <td>{{ usuario.tipo_usuario }}</td>
+        <td>
+            {% if usuario.is_active %}
+                Ativo
+            {% else %}
+                Inativo
+            {% endif %}
+        </td>
 
-        <br>
-        <h3>Colaboradores</h3>
-        <table>
-            <tr class="topo">
-                <th>Nome</th><th>Email</th><th>CPF</th><th>Telefone</th>
-            </tr>
-            {% for atendente in atendentes %}
-            <tr class="linha {% cycle 'A' 'B' %}">
-                <td>{{ atendente.first_name }} {{ atendente.last_name }}</td>
-                <td>{{ atendente.email }}</td>
-                <td>{{ atendente.CPF|default:"—" }}</td>
-                <td>{{ atendente.telefone|default:"—" }}</td>
-            </tr>
-            {% empty %}
-            <tr><td colspan="4" style="text-align:center;">Nenhum colaborador cadastrado.</td></tr>
-            {% endfor %}
-        </table>
-        <br><br>
-    </div>
+        <td>
+            <form method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="usuario_id" value="{{ usuario.id }}">
 
-    <div class="site-footer">
-        Copyright © 2026 — Desenvolvido com 💚 em Teresópolis.
-    </div>
+                {% if usuario.is_active %}
+                    <button name="acao" value="desativar">Desativar</button>
+                {% else %}
+                    <button name="acao" value="ativar">Ativar</button>
+                {% endif %}
+
+                {% if usuario.tipo_usuario == 'CLIENTE' %}
+                    <button name="acao" value="tornar_atendente">
+                        Tornar Atendente
+                    </button>
+                {% elif usuario.tipo_usuario == 'ATENDENTE' %}
+                    <button name="acao" value="tornar_cliente">
+                        Tornar Cliente
+                    </button>
+                {% endif %}
+            </form>
+        </td>
+    </tr>
+    {% endfor %}
+<h3>Criar Novo Usuário</h3>
+
+    <a href="{% url 'criar_usuario_admin' %}">
+        <button >Criar Novo Usuário</button>
+    </a>
+</form>
+
+</table>
+
+<div class="site-footer">
+Copyright © 2026 — Desenvolvido com 💚 em Teresópolis.
+</div>
 </body>
 </html>

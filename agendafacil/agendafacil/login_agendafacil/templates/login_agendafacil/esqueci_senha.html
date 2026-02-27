@@ -10,24 +10,32 @@
     <script src="{% static 'js/index.js' %}"></script>
     <script src="{% static 'login_agendafacil/js/index.js' %}"></script>
 </head>
-<body>
 <body>  
     <div class="site-header">
         <img src="{% static 'imagens/logo001.png' %}" width=320px>
+    </div>
+    <center> 
+        <div class="container">              
+            <br><br>
+              <p>Insira seu e-mail para resetar sua senha</p>
+
+
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <p><input type="submit" value="Enviar e-mail"></p>
+            </form>
+               <div class="email">
+               <img class="emailpng" src="{% static 'imagens/Email.png' %}">
+               </div>
+            <div class="divbtn">
+                <a href="{% url 'base' %}"><button >Inicio</a>
+           </div>
+            <br><br>
        </div>
-        <div class="container">                          
-                <br><br><center>
-                   <h2>Muito obrigado.</h2>
-                   <p>Agradecemos por nos ajudar a melhorar.</p>
-                   <p>Seu feedback é fundamental para o nosso sucesso.</p>
-                   <br>
-                   <img class="emailpng" src="IMAGENS/check.png">
-                <div class="divbtn">
-                   <a href="Perfil do Cliente.html"><button class="btn bt5">Pagina Inicial</button></a></center>
-                   <br>
-               </div>   
-<br><br>
-<br><br>
+    </center>
+    <br><br>
+    <br><br>
 <div class="site-footer">
 Copyright © 2026 — Desenvolvido com 💚 em Teresópolis.
 </div>

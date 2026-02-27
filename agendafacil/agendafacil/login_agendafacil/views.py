@@ -11,16 +11,14 @@ from django.views.decorators.http import require_POST
 def index_login(request):
     return render(request, 'login_agendafacil/index_login.html')
 
+def esqueci_senha(request):
+    return render(request, 'login_agendafacil/esqueci_senha.html')
 
 def cadastro_cliente(request):
     if request.method == 'POST':
         form = UsuarioForm(request.POST, request.FILES)
         if form.is_valid():
             user = form.save()
-
-            # Define username como email
-            user.username = user.email
-            user.save()
             return redirect('login')
     else:
         form = UsuarioForm()
@@ -55,14 +53,13 @@ def painel_admin(request):
         data = request.POST.get('data')
         horario = request.POST.get('horario')
         atendente_id = request.POST.get('atendente')
-        cliente_id = request.POST.get('cliente')
 
-        if data and horario and atendente_id and cliente_id:
-            Agendamento.objects.create(
+        if data and horario and atendente_id:
+            HorarioAtendimento.objects.create(
                 data=data,
                 horario=horario,
                 atendente_id=atendente_id,
-                cliente_id=cliente_id,
+                disponivel=True
             )
             messages.success(request, 'Agendamento criado com sucesso!')
         else:
@@ -73,13 +70,20 @@ def painel_admin(request):
         'total_agendamentos': Agendamento.objects.count(),
         'total_clientes': Usuario.objects.filter(tipo_usuario='CLIENTE').count(),
         'total_atendentes': Usuario.objects.filter(tipo_usuario='ATENDENTE').count(),
-        'agendamentos_hoje': Agendamento.objects.filter(data=date.today()).order_by('horario'),
+        'agendamentos_hoje': Agendamento.objects.filter(horario__data=date.today()).order_by('horario__horario'),
         'atendentes': Usuario.objects.filter(tipo_usuario='ATENDENTE').order_by('first_name'),
-        'clientes': Usuario.objects.filter(tipo_usuario='CLIENTE').order_by('first_name'),
+        'horarios_disponiveis': HorarioAtendimento.objects.filter(disponivel=True).order_by('data', 'horario'),  
     }
     return render(request, 'login_agendafacil/painel_admin.html', context)
 
-
+@login_required
+def remover_horario(request, horario_id):
+    if not (request.user.is_superuser or request.user.tipo_usuario == 'ADMIN'):
+        return redirect('redirect_pos_login')
+    horario = get_object_or_404(HorarioAtendimento, id=horario_id)
+    horario.delete()
+    messages.success(request, 'Horário removido com sucesso!')
+    return redirect('painel_admin')
 
 @login_required
 def dados_admin(request):
@@ -124,8 +128,72 @@ def visualizacao_feedback(request):
     if not (request.user.is_superuser or request.user.tipo_usuario == 'ADMIN'):
         return redirect('redirect_pos_login')
 
-    feedbacks = feedback_cliente.objects.all().order_by('-criado_em')
+    feedbacks = FeedbackCliente.objects.all().order_by('-criado_em')
     return render(request, 'login_agendafacil/visualizacao_feedback.html', {'feedbacks': feedbacks})
+
+@login_required
+def gerenciamento_usuarios(request):
+    if not (request.user.is_superuser or request.user.tipo_usuario == 'ADMIN'):
+        return redirect('redirect_pos_login')
+    
+    usuarios = Usuario.objects.exclude(tipo_usuario='ADMIN')
+    
+    # 🔹 Criar usuário
+    if 'criar_usuario' in request.POST:
+        form = UsuarioForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect('gerenciamento_usuarios')
+            
+    if request.method == 'POST':
+        usuario_id = request.POST.get('usuario_id')
+        acao = request.POST.get('acao')
+
+        usuario = get_object_or_404(Usuario, id=usuario_id)
+
+        ## ativação / desativação
+        if acao == 'ativar':
+            usuario.is_active = True
+            usuario.save()
+            messages.success(request, f'Usuário {usuario.CPF} ativado com sucesso!')
+
+        elif acao == 'desativar':
+            usuario.is_active = False
+            usuario.save()
+            messages.success(request, f'Usuário {usuario.CPF} desativado com sucesso!')    
+
+        ## tornar atendente / cliente e vice-versa
+        
+        elif acao == 'tornar_atendente':
+            usuario.tipo_usuario = 'ATENDENTE'
+            usuario.save()
+            messages.success(request, f'Usuário {usuario.CPF} tornou-se atendente com sucesso!')
+        elif acao == 'tornar_cliente':
+            usuario.tipo_usuario = 'CLIENTE'
+            usuario.save()
+            messages.success(request, f'Usuário {usuario.CPF} tornou-se cliente com sucesso!')
+
+        return redirect('gerenciamento_usuarios')
+    context = {
+        'usuarios': usuarios.order_by('first_name')
+        }
+    return render(request, 'login_agendafacil/gerenciamento_usuarios.html', context)   
+
+@login_required
+def criar_usuario_admin(request):
+    if not (request.user.is_superuser or request.user.tipo_usuario == 'ADMIN'):
+        return redirect('redirect_pos_login')
+    
+    if request.method == 'POST':
+        form = UsuarioForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Usuário criado com sucesso!')
+            return redirect('gerenciamento_usuarios')
+    else:
+        form = UsuarioForm()
+    
+    return render(request, 'login_agendafacil/cadastro_cliente.html', {'form': form})
 
 
 ## PAINÉIS ATENDENTE
@@ -136,15 +204,19 @@ def painel_atendente(request):
     
     hoje = date.today()
     agendamentos = Agendamento.objects.filter(
-        data = hoje
-    ).order_by('horario')
+        horario__atendente=request.user,
+        horario__data=hoje
+    ).order_by('horario__horario')
     
     context = {
         'agendamentos': agendamentos,
         'hoje': hoje
     }
 
-    return render(request, 'login_agendafacil/painel_atendente.html', context)
+    return render(request, 'login_agendafacil/painel_atendente.html', {
+        'agendamentos': agendamentos,
+        'hoje': hoje,
+    })
 
 
 @login_required
@@ -189,9 +261,9 @@ def lista_atendimentos(request):
         return redirect('redirect_pos_login')
     
     atendimentos = Agendamento.objects.filter(
-        atendente=request.user,
-        status='CONFIRMADO'
-    ).order_by('data', 'horario')
+        horario__atendente=request.user,
+        status='AGENDADO'
+    ).order_by('horario__data', 'horario__horario')
 
     return render(request, 'login_agendafacil/lista_atendimentos.html', {
         'atendimentos': atendimentos
@@ -321,10 +393,11 @@ def agendamento_cliente(request):
     if request.user.tipo_usuario != 'CLIENTE':
         return redirect ('redirect_pos_login')
     
-    data_selecionada = request.GET.get('data')
+    hoje = date.today()
+    data_selecionada = request.GET.get('data') or request.POST.get('data')
 
     datas = HorarioAtendimento.objects.filter(
-       disponivel=True).values('data', flat=True).distinct().order_by('data')
+       disponivel=True).values_list('data', flat=True).distinct().order_by('data')
     
     horarios = None
     
@@ -336,7 +409,7 @@ def agendamento_cliente(request):
 
     if request.method == 'POST':
         horarios_id = request.POST.get('horario_id')
-
+        data_selecionada = request.POST.get('data')
         horario = get_object_or_404(
             HorarioAtendimento,
             id=horarios_id, 
@@ -344,14 +417,17 @@ def agendamento_cliente(request):
 
         Agendamento.objects.create(
             cliente=request.user,
-            data=data_selecionada,
-            horario=horario
+            horario=horario,
         )
+        horario.disponivel = False
+        horario.save()
+
         return redirect('painel_cliente')
     return render(request, 'login_agendafacil/agendamento_cliente.html', {
         'datas': datas,
         'horarios': horarios,
-        'data_selecionada': data_selecionada
+        'data_selecionada': data_selecionada,
+        'hoje': hoje
     })
 
 
@@ -363,14 +439,12 @@ def painel_cliente(request):
     agendamentos = request.user.agendamentos.all()
     agendamento_id = request.GET.get('agendamento')
 
-    pendentes = agendamentos.filter(status='PENDENTE')
-    confirmados = agendamentos.filter(status='CONFIRMADO')
+    agendados = agendamentos.filter(status='AGENDADO')
     atendidos = agendamentos.filter(status='ATENDIDO')
     cancelados = agendamentos.filter(status='CANCELADO')
 
     return render(request, 'login_agendafacil/painel_cliente.html', {
-        'pendentes': pendentes,
-        'confirmados': confirmados,
+        'agendados': agendados,
         'atendidos': atendidos,
         'cancelados': cancelados,
     })

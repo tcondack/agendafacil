@@ -10,7 +10,6 @@
     <script src="{% static 'js/index.js' %}"></script>
     <script src="{% static 'login_agendafacil/js/index.js' %}"></script>
 </head>
-<body>
 <body>  
     <div class="site-header">
         <img src="{% static 'imagens/logo001.png' %}" width=320px>
@@ -25,10 +24,10 @@
                <p>não receba o e-mail de redefinição de senha.</p>
                <br>
                <div class="email">
-               <img class="emailpng" src="IMAGENS/Email.png">
+               <img class="emailpng" src="{% static 'imagens/Email.png' %}">
                </div>
             <div class="divbtn">
-               <a href="index.html"><button class="btn bt5">Início</button></a>
+               <a href="{% url 'base' %}"><button class="btn bt5">Início</button></a>
            </div>
             <br><br>
        </div>
@@ -36,7 +35,7 @@
     <br><br>
     <br><br>
 <div class="site-footer">
-    Copyright © 2024.
+Copyright © 2026 — Desenvolvido com 💚 em Teresópolis.
 </div>
 </body>
 </html>

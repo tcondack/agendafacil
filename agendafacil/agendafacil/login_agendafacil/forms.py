@@ -22,7 +22,7 @@ class UsuarioForm(UserCreationForm):
 
         CPF = self.cleaned_data['CPF']  # Usando o CPF como nome de usuário
         user.username = CPF
-        user.tipo_usuario = 'cliente'  # Definindo o tipo de usuário como 'cliente' por padrão
+        user.tipo_usuario = 'CLIENTE'  # Definindo o tipo de usuário como 'cliente' por padrão
         user.is_active = True  # Ativando o usuário imediatamente
         if commit:
             user.save()

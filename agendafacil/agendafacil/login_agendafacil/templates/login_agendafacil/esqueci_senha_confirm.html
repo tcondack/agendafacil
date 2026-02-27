@@ -1,0 +1,30 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agenda Fácil NAF</title>
+    <link rel="icon" type="image/ico" href="{% static 'imagens/ICON003.ico' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <script src="{% static 'js/index.js' %}"></script>
+    <script src="{% static 'login_agendafacil/js/index.js' %}"></script>
+</head>
+<body>  
+<h2>Redefinir senha</h2>
+
+{% if validlink %}
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Alterar senha</button>
+  </form>
+{% else %}
+  <p>Link inválido ou expirado.</p>
+{% endif %}
+
+<div class="site-footer">
+Copyright © 2026 — Desenvolvido com 💚 em Teresópolis.
+</div>
+</body>
+</html>

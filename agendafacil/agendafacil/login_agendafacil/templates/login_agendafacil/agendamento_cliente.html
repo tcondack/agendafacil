@@ -22,27 +22,40 @@
             </form>
             </div>
     </div>
-    <div class="container">   
-        <h1><center>Agendamento</center></h1>
-                <H2><center>Faça o seu agendamento.</center></H2> 
-                     <form class="form1" method="post">
-            {% csrf_token %}
-            <label for="data">Data:</label>
-            <input type="date" id="data" name="data" min="{{ hoje|date:'Y-m-d' }}" value="{{ request.POST.data }}" required>
+<div class="container">   
+    <h1><center>Agendamento</center></h1>
+    <h2><center>Faça o seu agendamento.</center></h2>
 
-            <label for="horario">Horário:</label>
-            <select id="horario" name="horario" required>
-                <option value="">Selecione um horário</option>
-                {% for horario in horarios_disponiveis %}
-                    <option value="{{ horario }}" {% if request.POST.horario == horario %}selected{% endif %}>{{ horario }}</option>
-                {% endfor %}
-            </select>
-                        <button class="btn" type="submit">Agendar</button>
+    <!-- 1. Seleção de data via GET -->
+    <form class="form1" method="get">
+        <label for="data">Data:</label>
+        <input type="date" id="data" name="data" min="{{ hoje|date:'Y-m-d' }}" value="{{ data_selecionada }}">
+        <button class="btn" type="submit">Buscar Horários</button>
+    </form>
 
-                    </form><br><br>
-            </div>
-            <br><br>         
+    <br>
+
+    <!-- 2. Agendamento via POST, só aparece após buscar -->
+    {% if horarios %}
+    <form class="form1" method="post">
+        {% csrf_token %}
+        <input type="hidden" name="data" value="{{ data_selecionada }}">
+        <label for="horario_id">Horário:</label>
+        <select id="horario_id" name="horario_id" required>
+            <option value="">Selecione um horário</option>
+            {% for horario in horarios %}
+                <option value="{{ horario.id }}">{{ horario.horario|time:"H:i" }} — {{ horario.atendente.first_name }}</option>
+            {% endfor %}
+        </select>
+        <button class="btn" type="submit">Agendar</button>
+    </form>
+    {% elif data_selecionada %}
+        <p>Nenhum horário disponível para esta data.</p>
+    {% endif %}
+</div>
+<br><br>
     </div>
+            <br><br>         
     <br><br> 
     <br><br>
     <div class="site-footer">

@@ -14,19 +14,19 @@
         <img src="{% static 'imagens/logo001.png' %}" width=320px>
         <button class="menu-button" onclick="toggleMenu()">Menu</button>
         <div class="menu" id="menu">
-            <a href="{% url 'criar_horario_atendimento' %}" class="button">Criar Horários</a>
-            <a href="{% url 'gerenciar_usuarios' %}" class="button">Gerenciar Usuários</a>
-            <a href="{% url 'visualizar_feedbacks' %}" class="button">Feedbacks Recebidos</a>
+            
+            <a href="{% url 'gerenciamento_usuarios' %}" class="button">Gerenciar Usuários</a>
+            <a href="{% url 'visualizacao_feedback' %}" class="button">Feedbacks Recebidos</a>
             <form action="{% url 'logout' %}" method="post">
                 {% csrf_token %}
                 <button type="submit" class="button">Sair</button>
             </form>
        </div>
     </div>
-   <div class="container">
+<div class="container">
         <p><strong>Bem-vindo, {{ request.user.first_name }}!</strong></p>
         <hr>
-        <center><h2>Gerenciar Agendamentos</h2></center>
+        <center><h2>Gerenciar Horários Disponíveis</h2></center>
 
         {% if messages %}
             {% for message in messages %}
@@ -42,44 +42,56 @@
             <label for="horario">Hora de Início</label>
             <input type="time" name="horario" id="horario" required>
 
-            <label for="atendente">Colaborador</label>
+            <label for="atendente">Atendente</label>
             <select name="atendente" id="atendente" required>
-                <option value="">Selecione um colaborador</option>
+                <option value="">Selecione um Atendente</option>
                 {% for atendente in atendentes %}
                     <option value="{{ atendente.id }}">{{ atendente.first_name }}</option>
                 {% endfor %}
             </select>
 
-            <label for="cliente">Cliente</label>
-            <select name="cliente" id="cliente" required>
-                <option value="">Selecione um cliente</option>
-                {% for cliente in clientes %}
-                    <option value="{{ cliente.id }}">{{ cliente.first_name }} — {{ cliente.email }}</option>
-                {% endfor %}
-            </select>
-
-            <button class="btn" type="submit">Adicionar Agendamento</button>
+            <button class="btn" type="submit">Adicionar Horário</button>
         </form>
 
         <br>
+        <center><h3>Agendamentos de Hoje</h3></center>
         <table>
             <tr class="topo">
-                <th>Data</th><th>Horário</th><th>Cliente</th><th>Colaborador</th><th>Status</th><th>Ações</th>
+                <th>Data</th><th>Horário</th><th>Cliente</th><th>Atendente</th><th>Status</th><th>Ações</th>
             </tr>
             {% for agendamento in agendamentos_hoje %}
             <tr class="linha {% cycle 'A' 'B' %}">
-                <td>{{ agendamento.data|date:"d/m/Y" }}</td>
-                <td>{{ agendamento.horario|time:"H:i" }}</td>
+                <td>{{ agendamento.horario.data|date:"d/m/Y" }}</td>
+                <td>{{ agendamento.horario.horario|time:"H:i" }}</td>
                 <td>{{ agendamento.cliente.first_name }}</td>
-                <td>{{ agendamento.atendente.first_name|default_if_none:"Não definido" }}</td>
+                <td>{{ agendamento.horario.atendente.first_name }}</td>
                 <td>{{ agendamento.get_status_display }}</td>
                 <td>
-                    <a href="{% url 'alterar_status' agendamento.id 'CONFIRMADO' %}"><button class="btn">Confirmar</button></a>
                     <a href="{% url 'alterar_status' agendamento.id 'CANCELADO' %}"><button class="btn bt5">Cancelar</button></a>
                 </td>
             </tr>
             {% empty %}
             <tr><td colspan="6" style="text-align:center;">Nenhum agendamento para hoje.</td></tr>
+            {% endfor %}
+        </table>
+
+        <br>
+        <center><h3>Horários Disponíveis</h3></center>
+        <table>
+            <tr class="topo">
+                <th>Data</th><th>Horário</th><th>Atendente</th><th>Ações</th>
+            </tr>
+            {% for horario in horarios_disponiveis %}
+            <tr class="linha {% cycle 'A' 'B' %}">
+                <td>{{ horario.data|date:"d/m/Y" }}</td>
+                <td>{{ horario.horario|time:"H:i" }}</td>
+                <td>{{ horario.atendente.first_name }}</td>
+                <td>
+                    <a href="{% url 'remover_horario' horario.id %}"><button class="btn bt5">Remover</button></a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="4" style="text-align:center;">Nenhum horário disponível cadastrado.</td></tr>
             {% endfor %}
         </table>
 
@@ -91,8 +103,8 @@
         </div>
     </div>
 
-    <div class="site-footer">
-        Copyright © 2026 — Desenvolvido com 💚 em Teresópolis.
-    </div>
+<div class="site-footer">
+Copyright © 2026 — Desenvolvido com 💚 em Teresópolis.
+</div>
 </body>
 </html>

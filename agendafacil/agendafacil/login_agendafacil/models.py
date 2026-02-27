@@ -60,6 +60,12 @@ class Agendamento(models.Model):
         related_name='agendamentos',
         limit_choices_to={'tipo_usuario': 'CLIENTE'}
     )
+
+    horario = models.ForeignKey(
+        'HorarioAtendimento',
+        on_delete=models.CASCADE,
+        related_name='agendamentos'
+    )
     status = models.CharField(
         max_length=15, 
         choices=STATUS_CHOICES, 

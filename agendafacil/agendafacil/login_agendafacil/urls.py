@@ -1,23 +1,30 @@
 from django import views
 from django.urls import path
 from django.contrib.auth import views as auth_views
-from .views import index_login, criar_horario_atendimento, redirect_pos_login, cadastro_cliente, atendimento, lista_atendimentos, painel_admin, editar_perfil_cliente, editar_perfil_atendente, painel_atendente, painel_cliente, perfil_atendente, feedback_cliente, dados_atendente
+from .views import criar_usuario_admin, index_login, redirect_pos_login, cadastro_cliente, atendimento, lista_atendimentos, painel_admin, editar_perfil_cliente, editar_perfil_atendente, painel_atendente, painel_cliente, perfil_atendente, feedback_cliente, remover_horario, visualizacao_feedback, dados_atendente
 from . import views
 
 urlpatterns =[
     path('', index_login, name='index_login'),
     path('cadastro_cliente/', cadastro_cliente, name='cadastro_cliente'),
     path('entrar/', auth_views.LoginView.as_view(template_name='login_agendafacil/login.html'), name='login'),
-   
     path('pos-login/', redirect_pos_login, name='redirect_pos_login'),
     path('sair/', auth_views.LogoutView.as_view(), name='logout'),
     
+    ## rota para esqueci a senha
+
+    path('esqueci_senha/', auth_views.PasswordResetView.as_view(template_name='login_agendafacil/esqueci_senha.html'), name='esqueci_senha'),
+    path('esqueci_senha/done/', auth_views.PasswordResetDoneView.as_view(template_name='login_agendafacil/esqueci_senha_done.html'), name='password_reset_done'),
+    path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(template_name='login_agendafacil/esqueci_senha_confirm.html'), name='password_reset_confirm'),
+    path('reset/complete/', auth_views.PasswordResetCompleteView.as_view(template_name='login_agendafacil/esqueci_senha_complete.html'), name='password_reset_complete'),
+
+
     ## sessão admin
     path('painel_admin/', painel_admin, name='painel_admin'),
     path('gerenciamento-usuarios/', views.gerenciamento_usuarios, name='gerenciamento_usuarios'),
-    path('criar-horario-atendimento/', views.criar_horario_atendimento, name='criar_horario_atendimento'),
-    path('visualizar-feedbacks/', views.visualizar_feedbacks, name='visualizar_feedbacks'),
-    path(),
+    path('visualizacao_feedback/', views.visualizacao_feedback, name='visualizacao_feedback'),
+    path('criar_usuario_admin/', views.criar_usuario_admin, name='criar_usuario_admin'),
+    path('remover_horario/<int:horario_id>/', views.remover_horario, name='remover_horario'),
     ## sessão atendente 
     path('painel_atendente/', painel_atendente, name='painel_atendente'),
     path('perfil_atendente/', perfil_atendente, name='perfil_atendente'),
