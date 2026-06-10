@@ -47,7 +47,7 @@ ROOT_URLCONF = 'agendafacil.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'app_agenda_facil', 'templates')],
+        'DIRS': [],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -68,8 +68,12 @@ WSGI_APPLICATION = 'agendafacil.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'agendafacil',
+        'USER': 'agendafacil_user',
+        'PASSWORD': '7j9b6k2v0y',
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
 }
 

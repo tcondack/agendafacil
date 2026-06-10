@@ -244,14 +244,13 @@ def atendimento(request, agendamento_id):
             atendimento.agendamento = agendamento
             atendimento.atendente = request.user
             atendimento.save()
-
             agendamento.status = 'ATENDIDO'
             agendamento.save()
             return redirect('painel_atendente')
     else:
         form = AtendimentoForm()
          
-        return render(request, 'login_agendafacil/atendimento.html',{
+    return render(request, 'login_agendafacil/atendimento.html',{
         'form': form,
         'agendamento': agendamento
     })
@@ -275,6 +274,7 @@ def dados_atendente(request):
         return redirect('redirect_pos_login')
     return render(request, 'login_agendafacil/dados_atendente.html')
 
+@login_required
 def editar_perfil_atendente(request):
     if request.user.tipo_usuario != 'ATENDENTE':
         return redirect('redirect_pos_login')
