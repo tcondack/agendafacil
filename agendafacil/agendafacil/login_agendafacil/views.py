@@ -8,6 +8,9 @@ from datetime import date
 from django.contrib import messages
 from django.views.decorators.http import require_POST
 
+def index_base (request):
+    return render(request, 'app_agenda_facil/index.html')
+
 def index_login(request):
     return render(request, 'login_agendafacil/index_login.html')
 

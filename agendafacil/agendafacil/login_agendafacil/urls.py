@@ -1,11 +1,12 @@
 from django import views
 from django.urls import path
 from django.contrib.auth import views as auth_views
-from .views import criar_usuario_admin, index_login, redirect_pos_login, cadastro_cliente, atendimento, lista_atendimentos, painel_admin, editar_perfil_cliente, editar_perfil_atendente, painel_atendente, painel_cliente, perfil_atendente, feedback_cliente, remover_horario, visualizacao_feedback, dados_atendente
+from .views import criar_usuario_admin, index_base, index_login, redirect_pos_login, cadastro_cliente, atendimento, lista_atendimentos, painel_admin, editar_perfil_cliente, editar_perfil_atendente, painel_atendente, painel_cliente, perfil_atendente, feedback_cliente, remover_horario, visualizacao_feedback, dados_atendente
 from . import views
 
 urlpatterns =[
-    path('', index_login, name='index_login'),
+    
+    path('', index_base, name='index_base'),
     path('cadastro_cliente/', cadastro_cliente, name='cadastro_cliente'),
     path('entrar/', auth_views.LoginView.as_view(template_name='login_agendafacil/login.html'), name='login'),
     path('pos-login/', redirect_pos_login, name='redirect_pos_login'),
