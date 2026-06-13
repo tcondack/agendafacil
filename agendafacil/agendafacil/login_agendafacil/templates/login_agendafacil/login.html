@@ -5,7 +5,6 @@
 
 {% block content %}
 
-<h1 style="text-align:center;">Bem-Vindo(a)!</h1>
 
 <div class="container">
 
@@ -36,9 +35,10 @@
                    required>
 
             <br><br>
-
+            <a href="{% url 'painel_cliente' %}">
+        
             <button class="btn" type="submit">Entrar</button>
-
+                </a>
         </form>
 
         <br>

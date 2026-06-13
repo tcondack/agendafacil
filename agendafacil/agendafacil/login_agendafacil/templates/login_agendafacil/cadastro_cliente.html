@@ -1,26 +1,9 @@
+{% extends 'base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agenda Fácil NAF</title>
-    <link rel="icon" type="image/ico" href="{% static 'imagens/ICON003.ico' %}">
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-    <script src="{% static 'js/index.js' %}"></script>
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-    <script src="{% static 'login_agendafacil/js/index.js' %}"></script>
-</head>
 
-<body>
+{% block title %}Cadastro Cliente{% endblock %}
 
-<div class="site-header">
-    <a href="{% url 'base' %}"><img src="{% static 'imagens/logo001.png' %}" width="320px"></a>
-
-    <a href="{% url 'base' %}" class="menu-button" >Inicio</a>
-</div>
-
-<div class="container">
+{% block content %}
 
     <center>
         <h2>Bem-vindo Cliente!</h2>
@@ -64,10 +47,5 @@
 </div>
 
 <br><br>
-
-<div class="site-footer">
-Copyright © 2026 — Desenvolvido com 💚 em Teresópolis.
-</div>
-
 </body>
-</html>
+{% endblock %}

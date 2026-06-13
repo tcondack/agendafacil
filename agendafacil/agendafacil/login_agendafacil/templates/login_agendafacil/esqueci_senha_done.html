@@ -1,15 +1,8 @@
+{% extends 'base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agenda Fácil NAF</title>
-    <link rel="icon" type="image/ico" href="{% static 'imagens/ICON003.ico' %}">
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-    <script src="{% static 'js/index.js' %}"></script>
-    <script src="{% static 'login_agendafacil/js/index.js' %}"></script>
-</head>
+{% block title %}Esqueci a senha{% endblock %}
+{% block content %}
+
 <body>  
     <div class="site-header">
         <img src="{% static 'imagens/logo001.png' %}" width=320px>
@@ -32,10 +25,6 @@
             <br><br>
        </div>
     </center>
-    <br><br>
-    <br><br>
-<div class="site-footer">
-Copyright © 2026 — Desenvolvido com 💚 em Teresópolis.
-</div>
-</body>
-</html>
+
+
+{% endblock %}
